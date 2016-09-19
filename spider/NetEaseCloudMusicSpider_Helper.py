@@ -88,6 +88,10 @@ def savePlayListInfo(dbHelper,playlistUrl):
     # print playlist_href
     if playlistUrl is None:
         return None
+
+    effectedRows = 0
+    playlist_rowid = 0
+
     response = requests.get(playlistUrl)
     # print(response.text)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -129,11 +133,16 @@ def savePlayListInfo(dbHelper,playlistUrl):
         dbHelper.close()
 
     songs = soup.find_all("a", href=re.compile("/song\?id=\d+"))
-    return effectedRows,songs
+    return effectedRows,playlist_rowid,songs
 
 
 
 def saveSongInfo(dbHelper,songUrl, songId,playlist_rowid):
+    if songUrl is None:
+        return 0
+
+    effectedRows = 0
+
     response = requests.get(songUrl)
     soup = BeautifulSoup(response.text, "html.parser")
     title = soup.find("em", class_="f-ff2").get_text().encode("utf-8").strip()

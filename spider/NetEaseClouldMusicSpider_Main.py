@@ -33,17 +33,18 @@ for i in range(0,41):
             if count%10 == 0:
                 sleep(300)
             else:
-                playlist_rowid = 0
-
                 # 解析并保存歌单信息
                 playListUrl = baseUrl + playlist["href"]
                 rtn = NetEaseCloudMusicSpider_Helper.savePlayListInfo(dbHelper,playListUrl)
+                if rtn is None:
+                    continue
                 effectedRows = rtn[0]
                 print "插入第" + str(count) + "条歌单信息,操作结果为-->" + str(effectedRows)
                 print count, playlist.get_text(), playlist["href"]
 
                 # 遍历歌单里的歌曲
-                songs = rtn[1]
+                playlist_rowid = rtn[1]
+                songs = rtn[2]
                 if songs is not None:
                     songIndex = 0
                     for song in songs:
@@ -54,6 +55,8 @@ for i in range(0,41):
                         songUrl = baseUrl + song["href"]
                         songId = song["href"].split('=')[1]
                         rtn = NetEaseCloudMusicSpider_Helper.saveSongInfo(dbHelper, songUrl, songId,playlist_rowid)
+                        if rtn is None:
+                            continue
                         print "插入第" + str(songIndex) + "条歌曲信息,操作结果为-->" + str(rtn[0])
 # close db connection
 dbHelper.close()

@@ -26,6 +26,7 @@ class DBHelper:
         with self.con.cursor() as cursor:
             cursor.execute(sql, params)
             rs = cursor.fetchone()
+            cursor.close()
             return rs
 
     def query_all(self, sql, params):
