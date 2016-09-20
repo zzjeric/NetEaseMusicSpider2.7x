@@ -129,8 +129,8 @@ def savePlayListInfo(dbHelper,playlistUrl):
                 playlist_rowid = isPlayListExist(dbHelper, playlist_tile)
     except Exception as e:
         print e
-    finally:
         dbHelper.close()
+
 
     songs = soup.find_all("a", href=re.compile("/song\?id=\d+"))
     return effectedRows,playlist_rowid,songs
@@ -173,6 +173,5 @@ def saveSongInfo(dbHelper,songUrl, songId,playlist_rowid):
             dbHelper.commit()
     except Exception as e:
         print e
-    finally:
         dbHelper.close()
     return effectedRows

@@ -7,6 +7,7 @@ import DbConfig
 
 class DBHelper:
     con = None
+    isClose = False
 
     def __init__(self):
         pass
@@ -26,7 +27,6 @@ class DBHelper:
         with self.con.cursor() as cursor:
             cursor.execute(sql, params)
             rs = cursor.fetchone()
-            cursor.close()
             return rs
 
     def query_all(self, sql, params):
@@ -40,6 +40,8 @@ class DBHelper:
     def insert_update_delete(self, sql, params):
         if self.con is None:
             raise Exception("Not connected to DB")
+        if self.isClose:
+            self.connect()
         with self.con.cursor() as cursor:
             effected_rows = cursor.execute(sql, params)
             return effected_rows
@@ -54,3 +56,4 @@ class DBHelper:
             raise Exception("Not connected to DB")
         self.commit()
         self.con.close()
+        isClose = True

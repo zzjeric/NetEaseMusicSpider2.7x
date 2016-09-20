@@ -55,9 +55,9 @@ for i in range(0,41):
                         songUrl = baseUrl + song["href"]
                         songId = song["href"].split('=')[1]
                         rtn = NetEaseCloudMusicSpider_Helper.saveSongInfo(dbHelper, songUrl, songId,playlist_rowid)
-                        if rtn is None:
+                        if rtn is None :
                             continue
-                        print "插入第" + str(songIndex) + "条歌曲信息,操作结果为-->" + str(rtn[0])
+                        print "插入第" + str(songIndex) + "条歌曲信息,操作结果为-->" + str(rtn)
 # close db connection
 dbHelper.close()
 
