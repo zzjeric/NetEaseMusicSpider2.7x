@@ -7,7 +7,7 @@ import DbConfig
 
 class DBHelper:
     con = None
-    isClose = False
+    isClose = True
 
     def __init__(self):
         pass
@@ -20,6 +20,7 @@ class DBHelper:
                        db = DbConfig.db,
                        charset = DbConfig.charset,
                        cursorclass = pymysql.cursors.DictCursor)
+        self.isClose = False
 
     def query_one(self, sql, params):
         if self.con is None:
